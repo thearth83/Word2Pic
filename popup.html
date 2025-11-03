@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word2Pic</title>
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Word2Pic 文字转图片</h1>
+    
+    <div class="input-section">
+      <label for="text-input">输入文字内容：</label>
+      <textarea id="text-input" placeholder="请在此处粘贴或输入文字内容..."></textarea>
+    </div>
+    
+    <div class="style-section">
+      <h2>选择风格模板</h2>
+      <div class="style-options">
+        <div class="style-option" data-style="simple">
+          <div class="style-preview simple-style">简约</div>
+          <span>简约</span>
+        </div>
+        <div class="style-option" data-style="literary">
+          <div class="style-preview literary-style">文艺</div>
+          <span>文艺</span>
+        </div>
+        <div class="style-option" data-style="business">
+          <div class="style-preview business-style">商务</div>
+          <span>商务</span>
+        </div>
+        <div class="style-option" data-style="colorful">
+          <div class="style-preview colorful-style">多彩</div>
+          <span>多彩</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="preview-section">
+      <h2>预览效果</h2>
+      <div id="preview-container">
+        <div id="image-preview">
+          <p class="preview-placeholder">在此处预览生成的图片效果</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button id="generate-btn">生成图片</button>
+      <button id="save-btn" disabled>保存图片</button>
+      <button id="copy-btn" disabled>复制图片</button>
+    </div>
+  </div>
+
+  <script src="js/popup.js"></script>
+</body>
+</html>
