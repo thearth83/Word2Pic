@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const generateBtn = document.getElementById('generate-btn');
   const saveBtn = document.getElementById('save-btn');
   const copyBtn = document.getElementById('copy-btn');
+  const aiSummaryBtn = document.getElementById('ai-summary-btn');
   const imagePreview = document.getElementById('image-preview');
   const styleOptions = document.querySelectorAll('.style-option');
   
@@ -78,6 +79,39 @@ document.addEventListener('DOMContentLoaded', function() {
       };
       img.src = generatedImage;
     }
+  });
+  
+  // AI总结按钮点击事件
+  aiSummaryBtn.addEventListener('click', function() {
+    const text = textInput.value.trim();
+    
+    if (!text) {
+      alert('请输入文字内容！');
+      return;
+    }
+    
+    // 显示加载状态
+    aiSummaryBtn.textContent = '正在总结...';
+    aiSummaryBtn.disabled = true;
+    
+    // 调用火山方舟大模型API
+    summarizeText(text)
+      .then(summary => {
+        // 更新文本框内容
+        textInput.value = summary;
+        
+        // 恢复按钮状态
+        aiSummaryBtn.textContent = 'AI总结文字';
+        aiSummaryBtn.disabled = false;
+      })
+      .catch(error => {
+        console.error('总结失败: ', error);
+        alert('总结失败，请重试！');
+        
+        // 恢复按钮状态
+        aiSummaryBtn.textContent = 'AI总结文字';
+        aiSummaryBtn.disabled = false;
+      });
   });
   
   /**
@@ -236,5 +270,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     return lines;
+  }
+  
+  /**
+   * 调用火山方舟大模型API进行文本总结
+   * @param {string} text - 需要总结的文本
+   * @returns {Promise<string>} - 总结后的文本
+   */
+  async function summarizeText(text) {
+    const API_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions';
+    const API_KEY = 'ad7a6826-a8d8-42ec-a8de-0a5893a477ca';
+    
+    const requestData = {
+      model: "doubao-seed-1-6-vision-250815",
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `请对以下文本进行简洁的总结，保留核心内容：\n\n${text}`
+            }
+          ]
+        }
+      ]
+    };
+    
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`
+        },
+        body: JSON.stringify(requestData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API请求失败: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // 从响应中提取总结文本
+      if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+        return data.choices[0].message.content;
+      } else {
+        throw new Error('API响应格式不正确');
+      }
+    } catch (error) {
+      console.error('调用大模型API失败:', error);
+      throw error;
+    }
   }
 });

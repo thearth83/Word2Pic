@@ -19,5 +19,8 @@
   "permissions": [
     "storage",
     "downloads"
+  ],
+  "host_permissions": [
+    "https://ark.cn-beijing.volces.com/*"
   ]
 }
