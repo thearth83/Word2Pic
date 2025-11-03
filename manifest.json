@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Word2Pic",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "将网页中的精彩文字内容转换为精美图片",
   "icons": {
     "16": "images/icon16.png",
@@ -16,9 +16,13 @@
       "128": "images/icon128.png"
     }
   },
+  "background": {
+    "service_worker": "js/background.js"
+  },
   "permissions": [
     "storage",
-    "downloads"
+    "downloads",
+    "tabs"
   ],
   "host_permissions": [
     "https://ark.cn-beijing.volces.com/*"
